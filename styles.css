@@ -168,6 +168,46 @@ body {
   object-fit: contain;
   opacity: 1;
 }
+
+html.mobile-lite .obj-tag {
+  backdrop-filter: none;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.35);
+}
+
+html.mobile-lite .page {
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+html.mobile-lite .float-a,
+html.mobile-lite .float-b,
+html.mobile-lite .float-c,
+html.mobile-lite .float-d,
+html.mobile-lite .float-e {
+  animation-duration: 4.4s !important;
+}
+
+html.mobile-lite .content-track.slide-next #panelCurrent,
+html.mobile-lite .content-track.slide-next #panelNext,
+html.mobile-lite .content-track.slide-prev #panelCurrent,
+html.mobile-lite .content-track.slide-prev #panelNext {
+  transition-duration: 220ms;
+}
+
+html.mobile-lite .artboard-overlay {
+  backdrop-filter: none;
+  background: rgba(10, 8, 14, 0.32);
+}
+
+html.mobile-lite .particle-heart-layer {
+  backdrop-filter: none;
+  background: rgba(7, 4, 10, 0.35);
+}
+
+html.mobile-lite .piece-particle {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 0 6px rgba(255, 209, 226, 0.7);
+}
 .object-texture {
   position: absolute;
   inset: 0;
