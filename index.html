@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>本科课程 - 高还原版</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app" class="app-frame">
+      <section id="homePage" class="page active" data-page="home">
+        <div class="home-shell">
+          <div class="home-scroll" id="homeScroll">
+            <div class="home-canvas">
+              <div class="home-bg-stripes" aria-hidden="true"></div>
+              <img class="home-text home-title-1" src="./assets/home-title-01.svg" alt="心之新生" />
+              <img class="home-text home-title-2" src="./assets/home-title-02.svg" alt="" />
+              <img class="home-text home-title-3-mark" src="./assets/03.svg" alt="03" />
+              <img class="home-text home-title-3" src="./assets/home-title-03.svg" alt="" />
+
+              <button class="fixed-overlay group-19" id="group19" aria-label="01">
+                <img src="./assets/01.svg" alt="01" />
+              </button>
+
+              <div class="fixed-overlay group-17" id="group17">
+                <img src="./assets/02.svg" alt="02" />
+              </div>
+
+              <button class="home-object object-01 float-a" data-exhibit="1" aria-label="进入Exhibit-01">
+                <span class="object-shape candy">
+                  <img class="object-texture" src="./assets/object-01-candy.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+              <span class="obj-tag tag-01" aria-hidden="true"></span>
+              <span class="obj-index idx-01">01.</span>
+
+              <button class="home-object object-02 float-b" data-exhibit="2" aria-label="进入Exhibit-02">
+                <span class="object-shape bottle">
+                  <img class="object-texture" src="./assets/object-02-bottle.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+              <span class="obj-tag tag-02" aria-hidden="true"></span>
+              <span class="obj-index idx-02">02.</span>
+
+              <button class="home-object object-03 float-c" data-exhibit="3" aria-label="进入Exhibit-03">
+                <span class="object-shape glass">
+                  <img class="object-texture" src="./assets/object-03-glass.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+              <span class="obj-tag tag-03" aria-hidden="true"></span>
+              <span class="obj-index idx-03">03.</span>
+
+              <button class="home-object object-04 float-d" data-exhibit="4" aria-label="进入Exhibit-04">
+                <span class="object-shape candle">
+                  <img class="object-texture" src="./assets/object-04-candle.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+              <span class="obj-tag tag-04" aria-hidden="true"></span>
+              <span class="obj-index idx-04">04.</span>
+
+              <button
+                id="stoneObject"
+                class="home-object object-05 float-e"
+                data-exhibit="5"
+                aria-label="进入Exhibit-05"
+              >
+                <span class="object-shape stone">
+                  <img class="object-texture" src="./assets/object-05-stone.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+              <span class="obj-tag tag-05" aria-hidden="true"></span>
+              <span class="obj-index idx-05">05.</span>
+
+              <div class="home-drag-zone" id="homeDragZone">
+                <div class="heart-puzzle" id="heartPuzzle" aria-hidden="true">
+                  <span class="heart-slot slot-1" data-slot="1"></span>
+                  <span class="heart-slot slot-2" data-slot="2"></span>
+                  <span class="heart-slot slot-3" data-slot="3"></span>
+                  <span class="heart-slot slot-4" data-slot="4"></span>
+                  <span class="heart-slot slot-5" data-slot="5"></span>
+                </div>
+
+                <span class="drag-object drag-01" data-piece="1"><img class="drag-asset" src="./assets/drag-01.svg" alt="" /></span>
+                <span class="drag-object drag-02" data-piece="2"><img class="drag-asset" src="./assets/drag-02.svg" alt="" /></span>
+                <span class="drag-object drag-03" data-piece="3"><img class="drag-asset" src="./assets/drag-03.svg" alt="" /></span>
+                <span class="drag-object drag-04" data-piece="4"><img class="drag-asset" src="./assets/drag-04.svg" alt="" /></span>
+                <span class="drag-object drag-05" data-piece="5"><img class="drag-asset" src="./assets/drag-05.svg" alt="" /></span>
+
+                <span class="obj-tag drag-tag drag-tag-01"></span>
+                <span class="obj-tag drag-tag drag-tag-02"></span>
+                <span class="obj-tag drag-tag drag-tag-03"></span>
+                <span class="obj-tag drag-tag drag-tag-04"></span>
+                <span class="obj-tag drag-tag drag-tag-05"></span>
+
+                <span class="obj-index drag-idx-01">01.</span>
+                <span class="obj-index drag-idx-02">02.</span>
+                <span class="obj-index drag-idx-03">03.</span>
+                <span class="obj-index drag-idx-04">04.</span>
+                <span class="obj-index drag-idx-05">05.</span>
+              </div>
+
+              <div class="artboard-overlay" id="artboardOverlay" aria-hidden="true">
+                <div class="artboard-panel" id="artboardPanel">
+                  <p class="artboard-copy">创作里没有标准答案
+每一笔情绪的流露
+都是内心最真实的声音</p>
+                  <canvas id="artboardCanvas" width="320" height="420"></canvas>
+                  <div class="artboard-actions">
+                    <button id="clearBoardBtn" type="button">清除</button>
+                    <button id="sendBoardBtn" type="button">完成发送</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="particle-heart-layer" id="particleHeartLayer" aria-hidden="true">
+                <canvas id="particleHeartCanvas" width="402" height="874"></canvas>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+
+      <section id="exhibitPage" class="page" data-page="exhibit">
+        <article id="exhibitRoot" class="exhibit-shell exhibit-01">
+          <div class="top-bar">
+            <button id="backHome" class="back-button" aria-label="返回Home">←</button>
+          </div>
+
+          <div class="content-track" id="contentTrack">
+            <div class="content-panel current" id="panelCurrent">
+              <div class="media-region" id="mediaRegion">
+                <video id="exhibitVideo" preload="metadata" playsinline></video>
+              </div>
+
+              <div class="text-layer">
+                <img id="exhibitTitleImg" alt="Exhibit 标题" />
+                <p id="exhibitDesc"></p>
+              </div>
+              <div class="hold-tip">保持长按</div>
+            </div>
+            <div class="content-panel next" id="panelNext" aria-hidden="true">
+              <div class="media-region" id="mediaRegionNext">
+                <video id="exhibitVideoNext" preload="metadata" playsinline muted></video>
+              </div>
+
+              <div class="text-layer">
+                <img id="exhibitTitleImgNext" alt="Exhibit 标题" />
+                <p id="exhibitDescNext"></p>
+              </div>
+              <div class="hold-tip">保持长按</div>
+            </div>
+          </div>
+
+          <button id="leftBtn" class="nav-btn nav-left" aria-label="切换上一个">
+            <img src="./assets/exhibit-left.svg" alt="" aria-hidden="true" />
+          </button>
+          <button id="rightBtn" class="nav-btn nav-right" aria-label="切换下一个">
+            <img src="./assets/exhibit-right.svg" alt="" aria-hidden="true" />
+          </button>
+
+        </article>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
