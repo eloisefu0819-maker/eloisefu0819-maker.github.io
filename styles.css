@@ -194,8 +194,9 @@ html.mobile-lite .content-track.slide-prev #panelNext {
 }
 
 html.mobile-lite .artboard-overlay {
-  backdrop-filter: none;
-  background: rgba(10, 8, 14, 0.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(10, 8, 14, 0.28);
 }
 
 html.mobile-lite .particle-heart-layer {
@@ -382,6 +383,7 @@ html.mobile-lite .piece-particle {
   margin: 0 0 10px;
   color: rgba(255, 255, 255, 0.95);
   white-space: pre-line;
+  font-family: "Hiragino Sans GB", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 14px;
   line-height: 1.45;
   text-align: center;

@@ -557,12 +557,19 @@ function setupOverlays() {
 
 function startHoldPlay(event) {
   if (event && event.type === "pointerdown" && event.pointerType === "mouse" && event.button !== 0) return;
+  if (event && event.type === "mousedown" && event.button !== 0) return;
+  if (event && (event.type === "touchstart" || event.type === "pointerdown")) {
+    event.preventDefault();
+  }
+
   if (holdTimer) {
     clearTimeout(holdTimer);
   }
+
   holdTimer = setTimeout(() => {
     isHoldingPlay = true;
-    getActiveExhibitVideo().play().catch(() => {});
+    const activeVideo = getActiveExhibitVideo();
+    activeVideo.play().catch(() => {});
   }, 220);
 }
 
@@ -593,10 +600,14 @@ window.addEventListener("resize", () => {
 });
 
 const bindHoldEventsToVideo = (videoEl) => {
-  videoEl.addEventListener("pointerdown", startHoldPlay);
-  ["pointerup", "pointercancel", "pointerleave", "lostpointercapture"].forEach((eventName) => {
+  videoEl.addEventListener("pointerdown", startHoldPlay, { passive: false });
+  videoEl.addEventListener("touchstart", startHoldPlay, { passive: false });
+  videoEl.addEventListener("mousedown", startHoldPlay);
+
+  ["pointerup", "pointercancel", "pointerleave", "lostpointercapture", "touchend", "touchcancel", "mouseup", "mouseleave"].forEach((eventName) => {
     videoEl.addEventListener(eventName, stopHoldPlay);
   });
+
   videoEl.addEventListener("ended", () => {
     isHoldingPlay = false;
   });
@@ -605,6 +616,8 @@ const bindHoldEventsToVideo = (videoEl) => {
 bindHoldEventsToVideo(exhibitVideo);
 bindHoldEventsToVideo(exhibitVideoNext);
 window.addEventListener("pointerup", stopHoldPlay);
+window.addEventListener("touchend", stopHoldPlay);
+window.addEventListener("mouseup", stopHoldPlay);
 window.addEventListener("blur", stopHoldPlay);
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
