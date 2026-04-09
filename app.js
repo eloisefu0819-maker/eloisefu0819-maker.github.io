@@ -117,6 +117,9 @@ const sendBoardBtn = document.getElementById("sendBoardBtn");
 const particleHeartLayer = document.getElementById("particleHeartLayer");
 const particleHeartCanvas = document.getElementById("particleHeartCanvas");
 
+const isMobileLite = window.matchMedia("(max-width: 768px)").matches || navigator.maxTouchPoints > 0;
+if (isMobileLite) document.documentElement.classList.add("mobile-lite");
+
 let currentExhibit = 1;
 let holdTimer = null;
 let isHoldingPlay = false;
@@ -128,6 +131,7 @@ let heartAnimFrame = null;
 let dragState = null;
 let isExhibitSliding = false;
 let slideTimer = null;
+let particleLastTs = 0;
 const exhibitClassNames = Object.values(exhibits).map((item) => item.className);
 
 function showHome() {
@@ -480,8 +484,9 @@ function startParticleHeart() {
   const cx = w / 2;
   const cy = h / 2;
 
-  heartParticles = Array.from({ length: 320 }, (_, i) => {
-    const t = (Math.PI * 2 * i) / 320;
+  const particleCount = isMobileLite ? 150 : 320;
+  heartParticles = Array.from({ length: particleCount }, (_, i) => {
+    const t = (Math.PI * 2 * i) / particleCount;
     const x = 16 * Math.sin(t) ** 3;
     const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
     return {
@@ -494,18 +499,24 @@ function startParticleHeart() {
     };
   });
 
-  const animate = () => {
+  const animate = (ts = 0) => {
+    if (isMobileLite && ts - particleLastTs < 33) {
+      heartAnimFrame = requestAnimationFrame(animate);
+      return;
+    }
+    particleLastTs = ts;
+
     ctx.clearRect(0, 0, w, h);
     const pulse = 1 + Math.sin(Date.now() / 420) * 0.04;
 
     heartParticles.forEach((p) => {
-      p.x += (p.tx - p.x) * 0.04 + (Math.random() - 0.5) * 0.25;
-      p.y += (p.ty - p.y) * 0.04 + (Math.random() - 0.5) * 0.25;
+      p.x += (p.tx - p.x) * 0.04 + (Math.random() - 0.5) * (isMobileLite ? 0.16 : 0.25);
+      p.y += (p.ty - p.y) * 0.04 + (Math.random() - 0.5) * (isMobileLite ? 0.16 : 0.25);
 
       ctx.beginPath();
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = isMobileLite ? 6 : 10;
       ctx.arc(cx + (p.x - cx) * pulse, cy + (p.y - cy) * pulse, p.r, 0, Math.PI * 2);
       ctx.fill();
     });
@@ -521,6 +532,7 @@ function stopParticleHeart() {
     cancelAnimationFrame(heartAnimFrame);
     heartAnimFrame = null;
   }
+  particleLastTs = 0;
   particleHeartLayer.classList.remove("open");
 }
 
@@ -594,6 +606,12 @@ bindHoldEventsToVideo(exhibitVideo);
 bindHoldEventsToVideo(exhibitVideoNext);
 window.addEventListener("pointerup", stopHoldPlay);
 window.addEventListener("blur", stopHoldPlay);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopHoldPlay();
+    if (particleHeartLayer.classList.contains("open")) stopParticleHeart();
+  }
+});
 
 setupDragPieces();
 setupArtboardDrawing();
