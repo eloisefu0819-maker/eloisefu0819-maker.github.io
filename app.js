@@ -176,6 +176,9 @@ function applyExhibitDataToPanel(data, target) {
   target.video.currentTime = 0;
   target.video.src = data.video;
   target.video.loop = false;
+  target.video.muted = false;
+  target.video.defaultMuted = false;
+  target.video.volume = 1;
 }
 
 function renderExhibit(index, direction = 0) {
@@ -277,7 +280,13 @@ function updateGroup17State() {
 }
 
 function getActiveExhibitVideo() {
-  return currentPanelRefs.video;
+  const video = currentPanelRefs.video;
+  if (video) {
+    video.muted = false;
+    video.defaultMuted = false;
+    if (video.volume === 0) video.volume = 1;
+  }
+  return video;
 }
 
 function stopHoldPlay() {
@@ -421,7 +430,12 @@ function setupArtboardDrawing() {
   const getPoint = (event) => {
     const rect = artboardCanvas.getBoundingClientRect();
     const touch = event.touches ? event.touches[0] : event;
-    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+    const scaleX = artboardCanvas.width / rect.width;
+    const scaleY = artboardCanvas.height / rect.height;
+    return {
+      x: (touch.clientX - rect.left) * scaleX,
+      y: (touch.clientY - rect.top) * scaleY
+    };
   };
 
   const start = (event) => {
