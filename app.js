@@ -132,6 +132,8 @@ let dragState = null;
 let isExhibitSliding = false;
 let slideTimer = null;
 let particleLastTs = 0;
+let homeScrollRaf = null;
+let resizeRaf = null;
 const exhibitClassNames = Object.values(exhibits).map((item) => item.className);
 
 function showHome() {
@@ -453,6 +455,7 @@ function setupArtboardDrawing() {
   };
 
   const start = (event) => {
+    if (event.cancelable) event.preventDefault();
     isDrawing = true;
     const p = getPoint(event);
     ctx.beginPath();
@@ -461,7 +464,7 @@ function setupArtboardDrawing() {
 
   const draw = (event) => {
     if (!isDrawing) return;
-    event.preventDefault();
+    if (event.cancelable) event.preventDefault();
     const p = getPoint(event);
     ctx.lineTo(p.x, p.y);
     ctx.stroke();
@@ -605,13 +608,22 @@ leftBtn.addEventListener("click", () => renderExhibit(prevIndex(currentExhibit),
 rightBtn.addEventListener("click", () => renderExhibit(nextIndex(currentExhibit), 1));
 
 homeScroll.addEventListener("scroll", () => {
-  updateGroup17State();
-  updateHeartPuzzleVisibility();
-});
+  if (homeScrollRaf) return;
+  homeScrollRaf = requestAnimationFrame(() => {
+    updateGroup17State();
+    updateHeartPuzzleVisibility();
+    homeScrollRaf = null;
+  });
+}, { passive: true });
+
 window.addEventListener("resize", () => {
-  initializeGroup17Origin();
-  updateGroup17State();
-  updateHeartPuzzleVisibility();
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    initializeGroup17Origin();
+    updateGroup17State();
+    updateHeartPuzzleVisibility();
+    resizeRaf = null;
+  });
 });
 
 const bindHoldEventsToVideo = (videoEl) => {
@@ -637,7 +649,10 @@ window.addEventListener("blur", stopHoldPlay);
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopHoldPlay();
-    if (particleHeartLayer.classList.contains("open")) stopParticleHeart();
+    if (particleHeartLayer.classList.contains("open")) {
+      stopParticleHeart();
+      setHomeInteractionLocked(false);
+    }
   }
 });
 
