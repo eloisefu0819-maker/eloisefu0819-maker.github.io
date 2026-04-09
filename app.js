@@ -136,7 +136,11 @@ const exhibitClassNames = Object.values(exhibits).map((item) => item.className);
 
 function showHome() {
   stopHoldPlay();
-  exhibitVideo.pause();
+  getActiveExhibitVideo().pause();
+  setHomeInteractionLocked(false);
+  artboardOverlay.classList.remove("open");
+  artboardOverlay.setAttribute("aria-hidden", "true");
+  stopParticleHeart();
   homePage.classList.add("active");
   exhibitPage.classList.remove("active");
 }
@@ -324,12 +328,18 @@ function burstParticlesAt(x, y) {
   }
 }
 
+function setHomeInteractionLocked(locked) {
+  homeScroll.style.overflowY = locked ? "hidden" : "auto";
+  homeScroll.style.touchAction = locked ? "none" : "pan-y";
+}
+
 function checkPuzzleCompletion() {
   if (placedPieces.size < 5) return;
   heartPuzzle.classList.add("complete");
   setTimeout(() => {
     artboardOverlay.classList.add("open");
     artboardOverlay.setAttribute("aria-hidden", "false");
+    setHomeInteractionLocked(true);
   }, 360);
 }
 
@@ -538,7 +548,11 @@ function stopParticleHeart() {
 
 function setupOverlays() {
   artboardOverlay.addEventListener("click", (event) => {
-    if (event.target === artboardOverlay) artboardOverlay.classList.remove("open");
+    if (event.target === artboardOverlay) {
+      artboardOverlay.classList.remove("open");
+      artboardOverlay.setAttribute("aria-hidden", "true");
+      setHomeInteractionLocked(false);
+    }
   });
 
   sendBoardBtn.addEventListener("click", (event) => {
@@ -549,6 +563,7 @@ function setupOverlays() {
   const closeParticleHeart = () => {
     if (!particleHeartLayer.classList.contains("open")) return;
     stopParticleHeart();
+    setHomeInteractionLocked(false);
   };
 
   particleHeartLayer.addEventListener("click", closeParticleHeart);
